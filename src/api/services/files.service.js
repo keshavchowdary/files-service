@@ -5,6 +5,8 @@ const {
   DOCUMENT_MIME_TYPES,
   BYTES_IN_KB,
   ERROR_MESSAGES,
+  DEFAULT_PAGE,
+  DEFAULT_PAGE_SIZE,
 } = require("../constants/files.constant");
 const { paginate } = require("../../utils/pagination.util");
 
@@ -37,7 +39,11 @@ async function uploadFileService({ file, makePublic = false }) {
   return newFile;
 }
 
-async function getFilesService({ page, pageSize, type }) {
+async function getFilesService({
+  page = DEFAULT_PAGE,
+  pageSize = DEFAULT_PAGE_SIZE,
+  type,
+}) {
   const { skip, limit } = paginate({ page, pageSize });
   const findQuery = {};
   if (type) {

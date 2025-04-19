@@ -31,6 +31,9 @@ const FILE_TYPES = {
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
+const DEFAULT_PAGE_SIZE = 10;
+const DEFAULT_PAGE = 1;
+
 const DOCUMENT_MIME_TYPES = [
   "application/msword",
   "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
@@ -49,4 +52,6 @@ module.exports = {
   BYTES_IN_KB,
   VALIDATION_MESSAGES,
   MAX_FILE_SIZE,
+  DEFAULT_PAGE_SIZE,
+  DEFAULT_PAGE,
 };
