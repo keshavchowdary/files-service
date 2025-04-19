@@ -1,5 +1,6 @@
 const restana = require("restana");
 const bodyParser = require("body-parser");
+const cors = require("cors");
 
 const registerRoutes = require("./api/routes/index.route");
 const { initConfig } = require('./app.config');
@@ -8,31 +9,26 @@ initConfig();
 
 const app = restana();
 
+const allowedOrigins = ["http://localhost:4200"];
+const corsOptions = {
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("Not allowed by CORS"));
+    }
+  },
+  methods: "GET,POST,PUT,DELETE,OPTIONS",
+  allowedHeaders: "Origin, X-Requested-With, Content-Type, Accept, Authorization",
+  credentials: true,
+};
+app.use(cors(corsOptions));
+
 app.use((req, res, next) => {
   if (req.body === undefined) req.body = {};
   if (req.query === undefined) req.query = {};
-  const allowedOrigins = [
-    "http://localhost:4200",
-  ];
-  const origin = req.headers.origin;
-  if (allowedOrigins.includes(origin)) {
-    res.setHeader("Access-Control-Allow-Origin", origin);
-  }
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, PUT, DELETE, OPTIONS"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  if (req.method === "OPTIONS") {
-    res.sendStatus(204);
-    return;
-  }
   next();
 });
-
 
 connectToDB()
 .then(() => {
