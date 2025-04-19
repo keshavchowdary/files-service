@@ -11,18 +11,28 @@ const app = restana();
 app.use((req, res, next) => {
   if (req.body === undefined) req.body = {};
   if (req.query === undefined) req.query = {};
-  res.setHeader("Access-Control-Allow-Origin", "*");
+  const allowedOrigins = [
+    "http://localhost:4200",
+  ];
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.setHeader("Access-Control-Allow-Origin", origin);
+  }
   res.setHeader(
     "Access-Control-Allow-Methods",
     "GET, POST, PUT, DELETE, OPTIONS"
   );
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
   if (req.method === "OPTIONS") {
-    res.send(204);
-  } else {
-    next();
+    res.sendStatus(204);
+    return;
   }
+  next();
 });
+
 
 connectToDB()
 .then(() => {
