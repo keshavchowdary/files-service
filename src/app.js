@@ -9,7 +9,7 @@ initConfig();
 
 const app = restana();
 
-const allowedOrigins = ["http://localhost:4200"];
+const allowedOrigins = ["http://localhost:4200", "https://file-service-presentation.vercel.app"];
 const corsOptions = {
   origin: (origin, callback) => {
     if (!origin || allowedOrigins.includes(origin)) {
